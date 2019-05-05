@@ -1,0 +1,12 @@
+.todo-link{
+    font-size:2em;
+}
+.btn{
+    padding: 5px 5px;
+    font-size: 12px;
+}
+
+.h1, .h2, .h3, h1, h2, h3 {
+    margin-top: 20px;
+    margin-bottom: 3px;
+}
