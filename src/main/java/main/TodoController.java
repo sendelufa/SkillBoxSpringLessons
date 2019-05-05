@@ -30,4 +30,12 @@ public class TodoController {
       }
       return new ResponseEntity(todo, HttpStatus.OK);
    }
+
+   @PostMapping("/todos/{id}")
+   public ResponseEntity delete(@PathVariable int id) {
+      if (Storage.deleteTodo(id)) {
+         return new ResponseEntity(true, HttpStatus.OK);
+      }
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+   }
 }

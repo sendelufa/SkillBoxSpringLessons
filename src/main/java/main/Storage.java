@@ -30,4 +30,7 @@ public class Storage {
       return null;
    }
 
+   public static boolean deleteTodo(int id) {
+      return todos.remove(id) != null;
+   }
 }
