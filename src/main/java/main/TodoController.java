@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import response.Todo;
 
@@ -35,6 +36,15 @@ public class TodoController {
    @DeleteMapping("/todos/{id}")
    public ResponseEntity<Object> delete(@PathVariable int id) {
       if (Storage.deleteTodo(id)) {
+         return new ResponseEntity<>(true, HttpStatus.OK);
+      }
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+   }
+
+   //edit item
+   @PostMapping("/todos/{id}")
+   public ResponseEntity<Object> edit(@PathVariable int id, Todo todo) {
+      if (Storage.editTodo(id, todo)) {
          return new ResponseEntity<>(true, HttpStatus.OK);
       }
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

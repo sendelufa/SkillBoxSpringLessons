@@ -33,4 +33,12 @@ public class Storage {
    public static boolean deleteTodo(int id) {
       return todos.remove(id) != null;
    }
+
+   public static boolean editTodo(int id, Todo todo) {
+      if (todos.containsKey(id)) {
+         todos.put(id, todo);
+         return true;
+      }
+      return false;
+   }
 }
