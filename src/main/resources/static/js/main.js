@@ -56,7 +56,7 @@ $(function(){
     //delete
     deleteTodo = function(todoId){
     $.ajax({
-                method: 'POST',
+                type: 'DELETE',
                 url: '/todos/' + todoId,
                 success: function(response){
                  $('#todo-' + todoId).remove();

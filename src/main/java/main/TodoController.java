@@ -3,6 +3,7 @@ package main;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,18 +24,18 @@ public class TodoController {
    }
 
    @GetMapping("/todos/{id}")
-   public ResponseEntity get(@PathVariable int id) {
+   public ResponseEntity<Object> get(@PathVariable int id) {
       Todo todo = Storage.getTodo(id);
       if (todo == null) {
          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
       }
-      return new ResponseEntity(todo, HttpStatus.OK);
+      return new ResponseEntity<>(todo, HttpStatus.OK);
    }
 
-   @PostMapping("/todos/{id}")
-   public ResponseEntity delete(@PathVariable int id) {
+   @DeleteMapping("/todos/{id}")
+   public ResponseEntity<Object> delete(@PathVariable int id) {
       if (Storage.deleteTodo(id)) {
-         return new ResponseEntity(true, HttpStatus.OK);
+         return new ResponseEntity<>(true, HttpStatus.OK);
       }
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
    }
