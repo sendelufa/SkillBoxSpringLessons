@@ -3,8 +3,7 @@ package main;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
-import response.Todo;
+import main.model.Todo;
 
 public class Storage {
 
