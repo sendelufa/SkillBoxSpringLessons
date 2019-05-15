@@ -38,4 +38,10 @@ public class Todo {
    public void setDescription(String description) {
       this.description = description;
    }
+
+   public Todo copyFrom(Todo original){
+      this.setTitle(original.getTitle());
+      this.setDescription(original.getDescription());
+      return this;
+   }
 }
