@@ -45,13 +45,7 @@ $(function(){
         return false;
     });
 
-    $(document).on('click', '.todo-edit', function(){
-        let response = getTodoItem($(this));
-        console.log(getTodoItem($(this)));
-        var code = '<p>' + response.title + '</p>';
-          
-        return false;
-    });
+
 
     //delete
     deleteTodo = function(todoId){
@@ -90,24 +84,104 @@ $(function(){
     });
         return false;
     }
+//edit todo
 
-     function getTodoItem(link){
-        var todoId = link.data('id');
-        var responseFunct;
-        $.ajax({
-            method: 'GET',
-            url: '/todos/' + todoId,
-            success: function(response){
-                responseFunct = response;
-                console.log(responseFunct);
-                return response;
-            },
-            error: function(response){
-                console.log("ошибка получения");
-            }
-        });
-        return responseFunct;
+
+
+
+
+$(document).on('click', '.todo-edit', function(){
+    getTodoItem(repaintItemToEditForm, $(this));
+    return false;
+});
+
+$(document).on('click', '.edit-todo-submit', function(){
+    editTodo(repaintAfterEdit, $(this));
+    return false;
+});
+
+$(document).on('click', '.edit-todo-cancel', function(){
+    var todoId = $(this).data('id');
+    $('.edit-' + todoId + '-container').remove();
+    let html='<button class="btn btn-primary btn-sm todo-edit" data-id="' + todoId +
+    '"><span class="glyphicon glyphicon-edit"></span> Редактировать</button>' +
+    ' <button class="btn btn-danger btn-sm todo-delete" data-id="' + todoId +
+    '" data-bb-example-key="alert-default">'+
+    '<span class="glyphicon glyphicon-remove"></span> Удалить</button>';
+    $('#todo-' + todoId).append(html);
+    return false;
+});
+
+function editTodo(callback, link){
+    var todoId = link.data('id');
+    var editTitle = $('.edit-' + todoId + '-title').val();
+    var editDesc = $('.edit-'+ todoId + '-description').val();
+    var dataArray = {
+        id: todoId,
+        title: editTitle, 
+        description: editDesc
+    };
+    $.ajax({
+        method: 'POST',
+        url: '/todos/' + todoId,
+        data: $.param(dataArray),
+        success: function(response){
+            callback(dataArray);
+        }
+    })
+};
+
+function repaintAfterEdit(dataArray){
+    console.log(dataArray);
+    console.log(dataArray.id);
+    $('.edit-' + dataArray.id + '-container').remove();
+    let html='<button class="btn btn-primary btn-sm todo-edit" data-id="' + dataArray.id +
+    '"><span class="glyphicon glyphicon-edit"></span> Редактировать</button>' +
+    ' <button class="btn btn-danger btn-sm todo-delete" data-id="' + dataArray.id +
+    '" data-bb-example-key="alert-default">'+
+    '<span class="glyphicon glyphicon-remove"></span> Удалить</button>';
+    $('#todo-' + dataArray.id).append(html);
+    $('#todo-' + dataArray.id + ' .todo-title').text(dataArray.title);
+    $('#todo-' + dataArray.id + ' .description').remove();
+
+};
+
+function getTodoItem(callback, link){
+    var todoId = link.data('id');
+    $.ajax({
+        method: 'GET',
+        url: '/todos/' + todoId,
+        success: function(response){
+         callback(link, response);
+     },
+     error: function(response){
+        console.log("ошибка получения");
     }
+});
+
+}
+
+
+function repaintItemToEditForm(HTMLelement, result) {
+    console.log(result);
+    let editHTML = [];
+    let editContainer = $('<div>', { class: 'edit-'+result.id+'-container'});
+
+    editHTML.push($('<div>', { class: 'edit-'+result.id+'-title-label', text:'Заголовок'}));
+    editHTML.push($('<input>', { class: 'edit-'+result.id+'-title', value:result.title}));
+    editHTML.push($('<div>', { class: 'edit-'+result.id+'-description-label', text:'Описание'}));
+    editHTML.push($('<input>', { class: 'edit-'+result.id+'-description', value:result.description}));
+    editHTML.push($('<br>'));
+    editHTML.push($('<button>', { class: 'btn btn-primary btn-sm edit-todo-submit edit-' + result.id + '-submit', 'data-id':result.id, text:'Изменить'}));
+    editHTML.push($('<button>', { class: 'btn btn-warning btn-sm edit-todo-cancel edit-' + result.id + '-cancel', 'data-id':result.id, text:'Отменить'}));
+
+    for (var i = 0; i < editHTML.length; i++) {
+      editHTML[i].appendTo(editContainer);
+  }
+  console.log(editContainer);
+  HTMLelement.parent().find('button').hide(); 
+  HTMLelement.parent().append(editContainer);
+}
 
       //get to do
       $(document).on('click', '.todo-link', function(){

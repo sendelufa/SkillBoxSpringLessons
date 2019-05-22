@@ -4,9 +4,21 @@
 .btn{
     padding: 5px 5px;
     font-size: 12px;
+    margin: 5px;
 }
 
 .h1, .h2, .h3, h1, h2, h3 {
     margin-top: 20px;
     margin-bottom: 3px;
+}
+ul {
+    display: flex;
+}
+
+li {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin: 10px;
 }
