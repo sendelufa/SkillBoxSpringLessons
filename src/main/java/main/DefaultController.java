@@ -1,16 +1,30 @@
 package main;
 
 
+import java.util.ArrayList;
 import java.util.stream.Stream;
+import main.model.Todo;
+import main.model.TodoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class DefaultController {
 
+   @Autowired
+   private TodoRepository todoRepository;
+
    @RequestMapping("/")
-   public String index() {
-      return Stream.generate(() -> String.valueOf(Math.random() * 100)).limit(40)
-          .map(String::toString).reduce(((strings, s) -> strings +=  "<br>\n" + s )).orElse("");
+   public String index(Model model) {
+      ArrayList<Todo> todos = new ArrayList<>();
+      todoRepository.findAll().forEach(todos::add);
+
+      model.addAttribute("todos", todos);
+      model.addAttribute("todosCount", todos.size());
+
+      return "index";
    }
 }

@@ -21,12 +21,12 @@ public class TodoController {
    private TodoRepository todoRepository;
 
    //get list
-   @GetMapping("/todos/")
+ /*  @GetMapping("/todos/")
    public List<Todo> list() {
       ArrayList<Todo> todos = new ArrayList<>();
       todoRepository.findAll().forEach(todos::add);
       return todos;
-   }
+   }*/
 
    //add to do
    @PostMapping("/todos/")
