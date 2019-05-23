@@ -74,7 +74,7 @@ $(function(){
             success: function(response){
              var code ='<p class="description"><strong>Описание:</strong><br>' + response.description + '</p>';
              link.parent().find('.description').remove();
-             link.parent().append(code);
+             link.parent().find('.todo-link').after(code);
          },
          error: function(response){
             if (response.status == 404) {
